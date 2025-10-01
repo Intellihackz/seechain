@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState } from "react";
+import logoIcon from "./assets/icon.png";
 
 interface TransactionResults {
   explanation: string;
@@ -202,22 +203,34 @@ The transaction was confirmed in **block #12,345,678** and consumed **36,582 gas
   return (
     <div className="min-h-screen bg-white text-black">
       {/* Header */}
-      <header className="border-b border-black py-6">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">SeeChain</h1>
-            <div>
-              <label htmlFor="network" className="block text-sm font-medium mb-1">
-                Network
+      <header className="border-b border-black bg-white">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between h-12">
+            {/* Logo and Title */}
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
+                <img 
+                  src={logoIcon} 
+                  alt="SeeChain Logo" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <h1 className="text-2xl font-bold text-black">SeeChain</h1>
+            </div>
+            
+            {/* Network Selector */}
+            <div className="flex items-center">
+              <label htmlFor="network" className="text-sm font-medium text-black mr-3">
+                Network:
               </label>
               <select
                 id="network"
                 value={selectedNetwork}
                 onChange={(e) => setSelectedNetwork(e.target.value)}
-                className="px-3 py-2 bg-white border border-black rounded-lg focus:border-black focus:outline-none"
+                className="px-3 py-2 bg-white border border-black text-black rounded-lg focus:border-black focus:outline-none"
               >
-                <option value="mainnet">VeChain Mainnet</option>
-                <option value="testnet">VeChain Testnet</option>
+                <option value="mainnet">Mainnet</option>
+                <option value="testnet">Testnet</option>
               </select>
             </div>
           </div>
@@ -249,7 +262,7 @@ The transaction was confirmed in **block #12,345,678** and consumed **36,582 gas
                   value={transactionHash}
                   onChange={(e) => handleHashChange(e.target.value)}
                   placeholder="0x..."
-                  className="w-full px-4 py-3 bg-white border border-black rounded-lg focus:border-black focus:outline-none"
+                  className="w-full px-4 py-3 bg-white border border-black text-black placeholder-gray-500 rounded-lg focus:border-black focus:outline-none"
                   disabled={isLoading}
                 />
               </div>
@@ -266,9 +279,9 @@ The transaction was confirmed in **block #12,345,678** and consumed **36,582 gas
 
           {/* Error State */}
           {error && (
-            <div className="bg-white border border-black rounded-lg p-6">
-              <h3 className="text-lg font-bold text-black mb-2">Error</h3>
-              <p className="text-black">{error}</p>
+            <div className="bg-red-50 border border-red-300 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-red-800 mb-2">Error</h3>
+              <p className="text-red-700">{error}</p>
             </div>
           )}
 
@@ -279,7 +292,7 @@ The transaction was confirmed in **block #12,345,678** and consumed **36,582 gas
               <div className="bg-white border border-black rounded-lg p-4 md:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
                   <h3 className="text-lg md:text-xl font-bold">Transaction Summary</h3>
-                  <span className="px-3 py-1 bg-black text-white text-sm rounded w-fit">
+                  <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded w-fit border border-green-300">
                     {results.technical.status}
                   </span>
                 </div>
@@ -287,10 +300,10 @@ The transaction was confirmed in **block #12,345,678** and consumed **36,582 gas
                   className="text-black text-sm md:text-base leading-relaxed max-w-none break-words"
                   dangerouslySetInnerHTML={{
                     __html: results.explanation
-                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>')
-                      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-                      .replace(/#(\d+)/g, '<span class="font-mono text-sm bg-gray-100 px-1 rounded">#$1</span>')
-                      .replace(/0x[a-fA-F0-9]{40}/g, '<code class="font-mono text-xs bg-gray-100 px-1 rounded break-all">$&</code>')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-black">$1</strong>')
+                      .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>')
+                      .replace(/#(\d+)/g, '<span class="font-mono text-sm px-1 rounded bg-gray-100 text-black">#$1</span>')
+                      .replace(/0x[a-fA-F0-9]{40}/g, '<code class="font-mono text-xs px-1 rounded break-all bg-gray-100 text-black">$&</code>')
                       .replace(/\n\n/g, '</p><p class="mt-4">')
                       .replace(/\n/g, '<br>')
                       .replace(/^/, '<p>')
@@ -304,28 +317,28 @@ The transaction was confirmed in **block #12,345,678** and consumed **36,582 gas
                 <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Technical Details</h3>
                 <div className="grid grid-cols-1 gap-4 md:gap-6">
                   <div className="space-y-3 md:space-y-4">
-                    <div className="border-b border-black pb-2 md:pb-3">
-                      <div className="text-xs md:text-sm font-medium text-black mb-1">From Address</div>
+                    <div className="border-b border-gray-300 pb-2 md:pb-3">
+                      <div className="text-xs md:text-sm font-medium text-gray-600 mb-1">From Address</div>
                       <div className="font-mono text-xs md:text-sm text-black break-all">{results.technical.from}</div>
                     </div>
-                    <div className="border-b border-black pb-2 md:pb-3">
-                      <div className="text-xs md:text-sm font-medium text-black mb-1">To Address</div>
+                    <div className="border-b border-gray-300 pb-2 md:pb-3">
+                      <div className="text-xs md:text-sm font-medium text-gray-600 mb-1">To Address</div>
                       <div className="font-mono text-xs md:text-sm text-black break-all">{results.technical.to}</div>
                     </div>
-                    <div className="border-b border-black pb-2 md:pb-3">
-                      <div className="text-xs md:text-sm font-medium text-black mb-1">Value Transferred</div>
+                    <div className="border-b border-gray-300 pb-2 md:pb-3">
+                      <div className="text-xs md:text-sm font-medium text-gray-600 mb-1">Value Transferred</div>
                       <div className="text-sm md:text-base text-black font-semibold">{results.technical.value}</div>
                     </div>
-                    <div className="border-b border-black pb-2 md:pb-3">
-                      <div className="text-xs md:text-sm font-medium text-black mb-1">Gas Limit / Used</div>
+                    <div className="border-b border-gray-300 pb-2 md:pb-3">
+                      <div className="text-xs md:text-sm font-medium text-gray-600 mb-1">Gas Limit / Used</div>
                       <div className="text-sm md:text-base text-black">{results.technical.gas} / {results.technical.gasUsed}</div>
                     </div>
-                    <div className="border-b border-black pb-2 md:pb-3">
-                      <div className="text-xs md:text-sm font-medium text-black mb-1">Block Number</div>
+                    <div className="border-b border-gray-300 pb-2 md:pb-3">
+                      <div className="text-xs md:text-sm font-medium text-gray-600 mb-1">Block Number</div>
                       <div className="text-sm md:text-base text-black">{results.technical.blockNumber.toLocaleString()}</div>
                     </div>
-                    <div className="border-b border-black pb-2 md:pb-3">
-                      <div className="text-xs md:text-sm font-medium text-black mb-1">Timestamp</div>
+                    <div className="border-b border-gray-300 pb-2 md:pb-3">
+                      <div className="text-xs md:text-sm font-medium text-gray-600 mb-1">Timestamp</div>
                       <div className="text-sm md:text-base text-black">{new Date(results.technical.timestamp * 1000).toLocaleString()}</div>
                     </div>
                   </div>
@@ -334,8 +347,18 @@ The transaction was confirmed in **block #12,345,678** and consumed **36,582 gas
 
               {/* Transaction Hash */}
               <div className="bg-white border border-black rounded-lg p-4 md:p-6">
-                <h3 className="text-lg md:text-xl font-bold mb-3">Transaction Hash</h3>
-                <div className="font-mono text-xs md:text-sm text-white break-all bg-black p-2 md:p-3 rounded overflow-hidden">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+                  <h3 className="text-lg md:text-xl font-bold">Transaction Hash</h3>
+                  <a
+                    href={`https://vechainstats.com/transaction/${transactionHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 text-sm rounded bg-purple-600 hover:bg-purple-700 text-white inline-flex items-center gap-1 w-fit transition-colors duration-200"
+                  >
+                    🔗 VeChainStats
+                  </a>
+                </div>
+                <div className="font-mono text-xs md:text-sm text-white break-all bg-black border border-gray-300 p-2 md:p-3 rounded overflow-hidden">
                   {transactionHash}
                 </div>
               </div>
